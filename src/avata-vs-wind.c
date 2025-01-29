@@ -82,7 +82,7 @@ int main() {
     flight_time_min[i] = (battery_capacity * 60) / (power_total[i] * 1000 / 60);
   }
 
-  double wind_speed_uncertainty = 3.14159;  // standard deviation m/s via PI, why not
+  double wind_speed_uncertainty = 3.14;  // standard deviation m/s via PI, why not
   int num_samples = 1000;
   double flight_time_samples[num_samples][num_wind_speeds];
   double flight_time_mean[num_wind_speeds];
