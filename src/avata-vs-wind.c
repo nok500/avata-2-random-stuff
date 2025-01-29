@@ -82,15 +82,12 @@ int main() {
     flight_time_min[i] = (battery_capacity * 60) / (power_total[i] * 1000 / 60);
   }
 
-// Uncertainty quantification
-// Assume uncertainty in wind speed measurement
-  double wind_speed_uncertainty = 1;  // m/s standard deviation
+  double wind_speed_uncertainty = 3.14159;  // standard deviation m/s via PI, why not
   int num_samples = 1000;
   double flight_time_samples[num_samples][num_wind_speeds];
-  double flight_time_mean[num_wind_speeds]; // No initialization here
-  double flight_time_std[num_wind_speeds];  // No initialization here
-
-  // Initialize the arrays to 0
+  double flight_time_mean[num_wind_speeds];
+  double flight_time_std[num_wind_speeds];
+  
   for (int i = 0; i < num_wind_speeds; i++) {
     flight_time_mean[i] = 0;
     flight_time_std[i] = 0;
@@ -112,21 +109,17 @@ int main() {
     flight_time_std[i] = sqrt(flight_time_std[i] / num_samples);
   }
 
-  // Print some results
-  printf("Maximum flight time in no wind: %.2f minutes\n", max_flight_time_no_wind);
+  printf("max no wind flight time :: %.2f minutes\n", max_flight_time_no_wind);
   for (int i = 0; i < num_wind_speeds; i += 5) {
-    printf("Flight time at %.1f m/s wind speed: %.2f +/- %.2f minutes\n", wind_speed[i], flight_time_mean[i], flight_time_std[i]);
+    printf("%.1f m/s wind speed :: %.2f +/- %.2f mins\n", wind_speed[i], flight_time_mean[i], flight_time_std[i]);
   }
-
-  // Plotting - You'll need a library like gnuplot to do this in C
-  // This code generates data files that can be plotted with gnuplot
+  
   FILE *gnuplot_data = fopen("flight_time_data.txt", "w");
   for (int i = 0; i < num_wind_speeds; i++) {
     fprintf(gnuplot_data, "%f %f %f\n", wind_speed[i], flight_time_mean[i], flight_time_std[i]);
   }
   fclose(gnuplot_data);
 
-  // System call to gnuplot to generate the plot
   system("gnuplot -persist -e \"set title 'DJI Drone Flight Time vs. Wind Speed with Uncertainty'; set xlabel 'Wind Speed (m/s)'; set ylabel 'Flight Time (minutes)'; plot 'flight_time_data.txt' using 1:2 with lines title 'Mean Flight Time', 'flight_time_data.txt' using 1:2:3 with yerrorbars title 'Uncertainty'\"");
 
   return 0;
