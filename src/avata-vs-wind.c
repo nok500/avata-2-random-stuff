@@ -111,7 +111,7 @@ int main() {
 
   printf("max no wind flight time :: %.2f minutes\n", max_flight_time_no_wind);
   for (int i = 0; i < num_wind_speeds; i += 5) {
-    printf("%.1f m/s wind speed :: %.2f +/- %.2f mins\n", wind_speed[i], flight_time_mean[i], flight_time_std[i]);
+    printf("%.1f m/s wind speed (%.2f uncertainty) :: %.2f +/- %.2f mins\n", wind_speed[i], flight_time_mean[i], flight_time_std[i]);
   }
   
   FILE *gnuplot_data = fopen("flight_time_data.txt", "w");
